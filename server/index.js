@@ -28,5 +28,6 @@ app.use(session({
 }))
 
 app.post('/api/register', authController.registerUser)
+app.post('/api/login', authController.loginUser)
 
 app.listen(9090, () => console.log('Listening on Port 9090'))

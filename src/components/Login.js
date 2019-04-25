@@ -1,43 +1,62 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React, { Component } from "react";
+import { Link, Redirect } from "react-router-dom";
+import axios from "axios";
 
-class Login extends Component {
+export class Login extends Component {
     constructor() {
-        super()
+        super();
         this.state = {
-            username: '',
-            password: ''
+            username: "",
+            password: "",
+            redirect: false
+        };
+    }
+
+    handleUsername = e => {
+        this.setState({ username: e.target.value });
+    };
+
+    handlePassword = e => {
+        this.setState({ password: e.target.value });
+    };
+
+    handleClick = e => {
+        const { username, password } = this.state;
+        axios.post("/api/login", { username, password }).then(res => {
+            this.setState({ redirect: true })
+        })
+    };
+
+    handleEnter = e => {
+        if (e.key === "Enter") {
+            this.handleClick();
         }
-    }
-
-    handleUsername = (e) => {
-        this.setState({ username: e.target.value })
-    }
-
-    handlePassword = (e) => {
-        this.setState({ password: e.target.value })
-    }
-
+    };
 
     render() {
+        if (this.state.redirect) {
+            return <Redirect to='/profile' />
+        }
         return (
             <div>
                 Login
+        <br />
+                <input onChange={this.handleUsername} placeholder="Username" />
                 <br />
                 <input
-                    onChange={this.handleUsername}
-                    placeholder="Username"
-                />
-                <br />
-                <input
-                    type='password'
+                    type="password"
                     onChange={this.handlePassword}
                     placeholder="Password"
+                    onKeyPress={this.handleEnter}
                 />
-                <h3>Don't have an account? <Link to='/register'>Register today!</Link></h3>
+                <br />
+                <button onClick={this.handleClick}>Log In</button>
+                <h3>
+                    Don't have an account? <Link to="register">Register</Link> Today!
+        </h3>
             </div>
-        )
+        );
     }
 }
 
-export default Login
+export default Login;

@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import { Redirect } from 'react-router-dom'
+import { updateUser } from '../redux/reducer'
+import { connect } from 'react-redux'
 
 class Register extends Component {
     constructor() {
@@ -30,7 +32,13 @@ class Register extends Component {
             username: this.state.username,
             password: this.state.password,
             email: this.state.email
-        }).then(response => {
+        }).then(user => {
+            //update redux state with the new user
+            //import the action creator
+            //mapStateToProps
+            //connect
+            //Provider
+            this.props.updateUser(user.data)
             this.setState({ redirect: true })
         })
     }
@@ -69,6 +77,10 @@ class Register extends Component {
         )
     }
 }
+const mapStateToProps = state => {
+    return {
+        user: state.user
+    }
+}
 
-
-export default Register
+export default connect(mapStateToProps, { updateUser })(Register)
