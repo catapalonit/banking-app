@@ -16,7 +16,6 @@ class Login extends Component {
 
     handlePassword = (e) => {
         this.setState({ password: e.target.value })
-
     }
 
 

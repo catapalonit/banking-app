@@ -2,9 +2,11 @@ require('dotenv').config()
 const massive = require('massive')
 const express = require('express')
 const session = require('express-session')
+const authController = require('./controllers/authController')
+
 const app = express()
 
-
+app.use(express.json())
 
 massive(process.env.CONNECTION_STRING)
     .then(db => {
@@ -25,5 +27,6 @@ app.use(session({
 
 }))
 
+app.post('/api/register', authController.registerUser)
 
 app.listen(9090, () => console.log('Listening on Port 9090'))
